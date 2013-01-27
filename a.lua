@@ -28,4 +28,4 @@ else
 end
 
 draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, ammobar, 10, Color( 255, 160, 0, 254 ) )
-draw.SimpleText( , "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
+draw.SimpleText( Text, "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
