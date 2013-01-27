@@ -18,7 +18,7 @@ hook.Add("HUDShouldDraw", "hidehud", hidehud)
 function myhud()
 local ply = LocalPlayer()
 if !ply:Alive() then return end
-if (ply:GetActiveWeapon() == nil or ply:GetActiveWeapon() == "Camera" or !ply:Alive()) then return end
+if (ply:GetActiveWeapon() == nil or ply:GetActiveWeapon() == "Camera") then return end
 
 
 local health = ply:Health()
