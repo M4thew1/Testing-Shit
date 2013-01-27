@@ -1,8 +1,8 @@
 if(ply:GetActiveWeapon().Primary) then
   ammobar = mag_left/ply:GetActiveWeapon().Primary.ClipSize*350
-  text = mag_left .." / ".. mag_extra .." AMMO"
+  Text = mag_left .." / ".. mag_extra .." AMMO"
 elseif(mag_left <= 0) then
-  text = "NO AMMO"
+  Text = "NO AMMO"
   ammobar = 0
 end
 
