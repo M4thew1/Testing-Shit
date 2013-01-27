@@ -1,70 +1,77 @@
-surface.CreateFont( "Arial", 
-{
-font    = "Arial",
-size    = 18,
-weight  = 1000,
-antialias = false,
-outline = true,
-shadow = false
-})
+function Hud()
+    local Player = LocalPlayer()
+    if !Player:Alive() then return end
+    if !IsValid( Player ) then return end
+    if(Player:GetActiveWeapon() == NULL or Player:GetActiveWeapon() == "Camera") then return end
+    
+    local mag_left = Player:GetActiveWeapon():Clip1()
+    local mag_extra = Player:GetAmmoCount(Player:GetActiveWeapon():GetPrimaryAmmoType())
+    
+    MaxAmmo={}
+    MaxAmmo["weapon_crowbar"]=0
+    MaxAmmo["weapon_physcannon"]=0
+    MaxAmmo["weapon_physgun"]=0
+    MaxAmmo["weapon_pistol"]=18
+    MaxAmmo["weapon_357"]=6
+    MaxAmmo["weapon_smg1"]=45
+    MaxAmmo["weapon_ar2"]=30
+    MaxAmmo["weapon_crossbow"]=1
+    MaxAmmo["weapon_frag"]=-1
+    MaxAmmo["weapon_rpg"]=-1
+    
+    -- Health
+    draw.RoundedBox( 0, 10, ScrH() - 65, 250, 55, Color( 30, 30, 30, 200))
+    draw.RoundedBox( 0, 15, ScrH() - 60, 240, 45, Color( 30, 30, 30, 200))
+    surface.DrawOutlinedRect( 10, ScrH() - 65, 250, 55)
+    surface.DrawOutlinedRect( 15, ScrH() - 60, 240, 45)
 
-function hidehud(name)
-    for k, v in pairs{"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo"} do
-        if name == v then return false end
+    draw.RoundedBox(0, 20, ScrH() - 55, 2.3 * Player:Health(), 18, Color( 255, 0, 0, 250 ) )
+    draw.RoundedBox(0, 20, ScrH() - 37, 2.3 * Player:Health(), 18, Color( 200, 0, 0, 250 ) )
+    surface.DrawOutlinedRect( 20, ScrH() - 55, 2.3 * Player:Health(), 36)
+
+    draw.SimpleText("Health: "..Player:Health() .. "%", "Arial", 130, ScrH() - 45, Color(255, 255, 255, 255), 1, 0)
+    
+
+    -- Armor
+    if Player:Armor() != 0 then
+        draw.RoundedBox( 0, 270, ScrH() - 65, 250, 55, Color( 30, 30, 30, 200))
+        draw.RoundedBox( 0, 275, ScrH() - 60, 240, 45, Color( 30, 30, 30, 200))
+
+        surface.DrawOutlinedRect( 270, ScrH() - 65, 250, 55)
+        surface.DrawOutlinedRect( 275, ScrH() - 60, 240, 45)
+
+        draw.RoundedBox(0, 280, ScrH() - 55, 2.3 * Player:Armor(), 18, Color( 0, 0, 255, 250 ) )
+        draw.RoundedBox(0, 280, ScrH() - 37, 2.3 * Player:Armor(), 18, Color( 0, 0, 200, 250 ) )
+        surface.DrawOutlinedRect( 280, ScrH() - 55, 2.3 * Player:Armor(), 36)
+
+        draw.SimpleText("Armor: "..Player:Armor().."%", "Arial", 395, ScrH() - 45, Color( 255, 255, 255, 255), 1, 0)
     end
+
+    -- AMMO
+    if(Player:GetActiveWeapon().Primary)then
+        ammobar = mag_left / Player:GetActiveWeapon().Primary.ClipSize * 230
+    else
+        ammobar = mag_left / MaxAmmo[ Player:GetActiveWeapon():GetClass() ] * 230
+    end
+
+    if mag_left >= 1 or mag_extra >= 1 then
+        draw.RoundedBox( 0, ScrW() - 260, ScrH() - 65, 250, 55, Color( 30, 30, 30, 200))
+        draw.RoundedBox( 0, ScrW() - 255, ScrH() - 60, 240, 45, Color( 30, 30, 30, 200))
+        surface.DrawOutlinedRect( ScrW() - 260, ScrH() - 65, 250, 55)
+        surface.DrawOutlinedRect( ScrW() - 255, ScrH() - 60, 240, 45)
+
+        draw.RoundedBox(0, ScrW() - 250, ScrH() - 55, ammobar, 18, Color( 0, 255, 0, 200 ) )
+        draw.RoundedBox(0, ScrW() - 250, ScrH() - 37, ammobar, 18, Color( 0, 200, 0, 200 ) )
+        surface.DrawOutlinedRect( ScrW() - 250, ScrH() - 55, ammobar, 36)
+
+        draw.SimpleText(mag_left .." / ".. mag_extra .. " AMMO", "Arial", ScrW() - 140, ScrH() - 45, Color( 255, 255, 255, 255), 1, 0)
+    end
+end 
+hook.Add("HUDPaint", "(:", Hud)
+ 
+function HideShit(name)
+	for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo"}) do
+		if name == v then return false end
+	end
 end
-hook.Add("HUDShouldDraw", "hidehud", hidehud)
-
-function myhud()
-local ply = LocalPlayer()
-if !ply:Alive() then return end
-if (ply:GetActiveWeapon() == nil or ply:GetActiveWeapon() == "Camera") then return end
-
-
-local health = ply:Health()
-local maxhealth = 100
-
-local healthratio = math.Round(health*10/maxhealth)/10
-
-
-draw.RoundedBox(0, 0, ScrH() - 65, 2400, 1000, Color(60, 60, 60, 200))
-
-
-local TextID = surface.GetTextureID("vgui/gradient-d")
-surface.SetDrawColor( 50, 50, 50, 200 )
-surface.SetTexture( TextID )
-surface.DrawTexturedRect( 0, 1015, 2400, 90 )
-
-draw.RoundedBox(0, 5, 1025, 310, 50, Color(0, 0, 0, 100))
-draw.RoundedBox(0, 10, 1030, 300, 40, Color(50, 50, 50, 255))
-surface.SetDrawColor( 290*(1-healthratio), 200*healthratio , 0, 200 )
-surface.DrawRect( 15, 1035, 290*healthratio, 30 )
-
-
-draw.SimpleText("Health: " .. ply:Health() .. "%", "Arial", 120, 1040, Color(254, 254, 254, 255), 0, 0)
-
-local weapon = ply:GetActiveWeapon()
-local mag_left = ply:GetActiveWeapon():Clip1()
-local mag_extra = ply:GetAmmoCount(ply:GetActiveWeapon():GetPrimaryAmmoType())
-
-if(ply:GetActiveWeapon().Primary or !ply:Alive())then
-ammobar = mag_left/ply:GetActiveWeapon().Primary.ClipSize*350
-else
-ammobar = 0
-end
-
-if(mag_left and mag_extra <= 0)then
-slash = " "
-mag_left = "NO AMMO"
-mag_extra = " "
-ammo = " "
-else
-slash = "/"
-ammo = " AMMO"
-end
-
-
-draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, 250 * ammobar, 10, Color( 255, 160, 0, 254 ) )
-draw.SimpleText( mag_left.. slash ..mag_extra.. ammo, "Arial", ScrW()-180, ScrH()-28, Color( 255, 255, 255, 255 ), 1)
-end
-hook.Add("HUDPaint", "myhud", myhud)
+hook.Add("HUDShouldDraw", "HideShit", HideShit)
