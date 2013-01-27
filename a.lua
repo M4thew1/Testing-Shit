@@ -6,5 +6,5 @@ elseif(mag_left <= 0) then
   ammobar = 0
 end
 
-draw.SimpleText( Text, "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
 draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, 250 * ammobar, 10, Color( 255, 160, 0, 254 ) )
+draw.SimpleText( Text, "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
