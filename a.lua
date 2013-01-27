@@ -2,7 +2,6 @@ local ply = LocalPlayer()
 
 local mag_left = ply:GetActiveWeapon():Clip1()
 local mag_extra = ply:GetAmmoCount(ply:GetActiveWeapon():GetPrimaryAmmoType())
-local secondary_ammo = ply:GetAmmoCount(ply:GetActiveWeapon():GetSecondaryAmmoType())
 
 MaxAmmo={}
 MaxAmmo["weapon_crowbar"]=0
