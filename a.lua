@@ -7,4 +7,4 @@ elseif(mag_left <= 0) then
 end
 
 draw.SimpleText( Text, "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
-draw.RoundedBox( 6, 30, 30, 250 * ammobar, 50, Color( 255, 255, 255, 255 ), 1  )
+draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, 250 * ammobar, 10, Color( 255, 160, 0, 254 ) )
