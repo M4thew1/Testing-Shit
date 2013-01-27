@@ -15,13 +15,17 @@ MaxAmmo["weapon_crossbow"]=1
 MaxAmmo["weapon_frag"]=-1
 MaxAmmo["weapon_rpg"]=-1
 
-if(ply:GetActiveWeapon().Primary)then
-  ammobar = mag_left / ply:GetActiveWeapon().Primary.ClipSize * 180
-  draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, ammobar, 10, Color( 255, 160, 0, 254 ) )
-  draw.SimpleText( mag_left .." / ".. mag_extra .." AMMO", "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
-else
-  ammobar = mag_left / MaxAmmo[ ply:GetActiveWeapon():GetClass() ] * 180
-  draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, ammobar, 10, Color( 255, 160, 0, 254 ) )
-  draw.SimpleText( "NO AMMO", "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
+if(ply:GetActiveWeapon() == NULL or ply:GetActiveWeapon() == "Camera") then
+  Text = "NO AMMO"
 end
 
+if(ply:GetActiveWeapon().Primary)then
+  ammobar = mag_left / ply:GetActiveWeapon().Primary.ClipSize * 180
+  Text = mag_left .." / ".. mag_extra .." AMMO"
+else
+  ammobar = mag_left / MaxAmmo[ ply:GetActiveWeapon():GetClass() ] * 180
+  Text = "NO AMMO"
+end
+
+draw.RoundedBox( 0, ScrW() - 360, ScrH() - 80, ammobar, 10, Color( 255, 160, 0, 254 ) )
+draw.SimpleText( , "Arial", ScrW()-180, ScrH()-40, Color( 255, 255, 255, 254 ), 1)
